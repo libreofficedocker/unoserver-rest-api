@@ -11,10 +11,10 @@ import (
 )
 
 type RequestForm struct {
-	Name        string                `form:"name"`
-	Orientation string                `form:"orientation"`
-	ConvertTo   string                `form:"convert-to" binding:"required"`
-	File        *multipart.FileHeader `form:"file" binding:"required"`
+	Name      string                `form:"name"`
+	Options   []string              `form:"opts[]"`
+	ConvertTo string                `form:"convert-to" binding:"required"`
+	File      *multipart.FileHeader `form:"file" binding:"required"`
 }
 
 func RequestHandler(c *gin.Context) {
@@ -43,14 +43,8 @@ func RequestHandler(c *gin.Context) {
 	// Prepare output file path
 	outFile, _ := os.CreateTemp(deport.WorkDir, "*-"+form.Name+"."+form.ConvertTo)
 
-	// Prepare unoconvert comamnd flags
-	args := []string{}
-	if form.Orientation == "landscape" {
-		args = append(args, "--landscape")
-	}
-
 	// Run unoconvert command with options
-	err = unoconvert.Run(inFile.Name(), outFile.Name(), args...)
+	err = unoconvert.Run(inFile.Name(), outFile.Name(), form.Options...)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "unoconvert unknown error")
 		return
