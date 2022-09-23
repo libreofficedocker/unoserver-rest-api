@@ -11,13 +11,13 @@ NAME:
    unoserver-rest-api - The simple REST API for unoserver
 
 USAGE:
-   unoserver-rest-api-darwin [global options] command [command options] [arguments...]
+   unoserver-rest-api [global options] command [command options] [arguments...]
 
 VERSION:
    0.1.0
 
 AUTHOR:
-   Socheat Sok <socheatsok78@gmail.com>
+   Socheat Sok
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command

@@ -36,7 +36,7 @@ func main() {
 		},
 	}
 	app.Author = "Socheat Sok"
-	app.Email = "socheatsok78@gmail.com"
+	app.Email = ""
 	app.Action = mainAction
 
 	if err := app.Run(os.Args); err != nil {
