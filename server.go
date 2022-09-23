@@ -6,10 +6,37 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 )
 
-var uploadDest string = "data"
+var WorkDir string = "workd"
+
+func init() {
+	d, _ := os.MkdirTemp("", "unodata-*")
+	WorkDir = d
+	log.Printf("Using: '%s'", d)
+}
+
+func cleanup() {
+	log.Printf("Cleanup '%s'", WorkDir)
+	os.RemoveAll(WorkDir)
+}
+
+func main() {
+	defer cleanup()
+
+	gin.SetMode(gin.ReleaseMode)
+	gin.DisableConsoleColor()
+
+	router := gin.Default()
+	router.SetTrustedProxies(nil)
+
+	router.GET("/", handleRoot)
+	router.POST("/convert", handleConvert)
+
+	endless.ListenAndServe(":4242", router)
+}
 
 func handleRoot(c *gin.Context) {
 	// If the client is 192.168.1.2, use the X-Forwarded-For
@@ -33,18 +60,4 @@ func handleConvert(c *gin.Context) {
 	// Upload the file to specific dst.
 	c.SaveUploadedFile(file, f.Name())
 	c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", f.Name()))
-}
-
-func main() {
-
-	gin.SetMode(gin.ReleaseMode)
-	gin.DisableConsoleColor()
-
-	router := gin.Default()
-	router.SetTrustedProxies(nil)
-
-	router.GET("/", handleRoot)
-	router.POST("/convert", handleConvert)
-
-	router.Run()
 }
