@@ -11,19 +11,23 @@ import (
 )
 
 type RequestForm struct {
-	Name        string                `form:"name" binding:"required"`
-	Orientation string                `form:"orientation" binding:"required"`
+	Name        string                `form:"name"`
+	Orientation string                `form:"orientation"`
 	ConvertTo   string                `form:"convert-to" binding:"required"`
 	File        *multipart.FileHeader `form:"file" binding:"required"`
 }
 
 func RequestHandler(c *gin.Context) {
-	var form RequestForm
 	var err error
+	var form RequestForm
 
 	if err := c.ShouldBind(&form); err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		return
+	}
+
+	if form.Name != "" {
+		form.Name = form.File.Filename
 	}
 
 	inFile, _ := os.CreateTemp(deport.WorkDir, "*-"+form.Name)
