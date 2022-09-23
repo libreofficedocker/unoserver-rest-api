@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"syscall"
 
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
@@ -15,11 +16,11 @@ var WorkDir string = "workd"
 func init() {
 	d, _ := os.MkdirTemp("", "unodata-*")
 	WorkDir = d
-	log.Printf("Using: '%s'", d)
+	log.Printf("Server working directory '%s'", d)
 }
 
 func cleanup() {
-	log.Printf("Cleanup '%s'", WorkDir)
+	log.Printf("Removing directory '%s'", WorkDir)
 	os.RemoveAll(WorkDir)
 }
 
@@ -35,7 +36,11 @@ func main() {
 	router.GET("/", handleRoot)
 	router.POST("/convert", handleConvert)
 
-	endless.ListenAndServe(":4242", router)
+	server := endless.NewServer("localhost:4242", router)
+	server.BeforeBegin = func(add string) {
+		log.Printf("Server is running pid is %d", syscall.Getpid())
+	}
+	server.ListenAndServe()
 }
 
 func handleRoot(c *gin.Context) {
