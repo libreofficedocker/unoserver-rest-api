@@ -16,7 +16,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "unoserver-rest-api"
 	app.Version = release
-	app.Usage = "The simple REST API for unoserver"
+	app.Usage = "The simple REST API for unoserver and unoconvert"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "addr",
@@ -26,7 +26,7 @@ func main() {
 		cli.StringFlag{
 			Name:  "unoconvert-addr",
 			Value: "127.0.0.1:2002",
-			Usage: "The addr used by the unoserver",
+			Usage: "The addr used by the unoconvert",
 		},
 		cli.StringFlag{
 			Name:   "unoconvert-bin",
