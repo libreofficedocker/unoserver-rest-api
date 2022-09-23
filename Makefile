@@ -2,14 +2,17 @@ install:
 	@go mod tidy
 
 run:
-	@go run server.go
+	@go run unoserver-rest-api.go
 
-build: build-linux build-darwin
+build: clean build-linux build-darwin
 
 build-linux:
-	GOOS=linux go build -ldflags="-s -w" -o bin/server-linux server.go
-	upx bin/server-linux
+	GOOS=linux go build -ldflags="-s -w" -o bin/unoserver-rest-api-linux unoserver-rest-api.go
+	upx bin/unoserver-rest-api-linux
 
 build-darwin:
-	GOOS=darwin go build -ldflags="-s -w" -o bin/server-darwin server.go
-	upx bin/server-darwin
+	GOOS=darwin go build -ldflags="-s -w" -o bin/unoserver-rest-api-darwin unoserver-rest-api.go
+	upx bin/unoserver-rest-api-darwin
+
+clean:
+	@rm -rf bin
