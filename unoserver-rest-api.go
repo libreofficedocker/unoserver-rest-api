@@ -1,10 +1,12 @@
 package main
 
 import (
+	"net"
 	"os"
 
 	"github.com/socheatsok78/unoserver-rest-api/deport"
 	"github.com/socheatsok78/unoserver-rest-api/server"
+	"github.com/socheatsok78/unoserver-rest-api/unoconvert"
 	"github.com/urfave/cli"
 )
 
@@ -17,17 +19,17 @@ func main() {
 	app.Usage = "The simple REST API for unoserver"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:  "interface",
-			Value: "127.0.0.1",
-			Usage: "The interface used by the unoserver.",
+			Name:  "addr",
+			Value: "127.0.0.1:2003",
+			Usage: "The addr used by the unoserver api server",
 		},
 		cli.StringFlag{
-			Name:  "port",
-			Value: "2002",
-			Usage: "The port used by the unoserver.",
+			Name:  "unoconvert-addr",
+			Value: "127.0.0.1:2002",
+			Usage: "The addr used by the unoserver",
 		},
 		cli.StringFlag{
-			Name:   "executable",
+			Name:   "unoconvert-bin",
 			Value:  "unoconvert",
 			Usage:  "Set the unoconvert executable path.",
 			EnvVar: "UNOCONVERT_EXECUTABLE_PATH",
@@ -49,6 +51,14 @@ func mainAction(c *cli.Context) {
 	// Cleanup temporary working directory after finished
 	defer deport.CleanTemp()
 
+	// Configure unoconvert options
+	unoAddr := c.String("unoconvert-addr")
+	host, port, _ := net.SplitHostPort(unoAddr)
+	unoconvert.SetInterface(host)
+	unoconvert.SetPort(port)
+	unoconvert.SetExecutable(c.String("unoconvert-bin"))
+
 	// Start the API server
-	server.ListenAndServe("")
+	addr := c.String("addr")
+	server.ListenAndServe(addr)
 }
