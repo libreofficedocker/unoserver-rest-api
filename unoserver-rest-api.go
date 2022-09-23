@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 
+	"github.com/socheatsok78/unoserver-rest-api/deport"
+	"github.com/socheatsok78/unoserver-rest-api/server"
 	"github.com/urfave/cli"
 )
 
@@ -14,6 +16,16 @@ func main() {
 	app.Version = release
 	app.Usage = "The simple REST API for unoserver"
 	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "interface",
+			Value: "127.0.0.1",
+			Usage: "The interface used by the unoserver.",
+		},
+		cli.StringFlag{
+			Name:  "port",
+			Value: "2002",
+			Usage: "The port used by the unoserver.",
+		},
 		cli.StringFlag{
 			Name:   "executable",
 			Value:  "unoconvert",
@@ -31,5 +43,12 @@ func main() {
 }
 
 func mainAction(c *cli.Context) {
-	// server.ListenAndServe()
+	// Create temporary working directory
+	deport.MkdirTemp()
+
+	// Cleanup temporary working directory after finished
+	defer deport.CleanTemp()
+
+	// Start the API server
+	server.ListenAndServe("")
 }
