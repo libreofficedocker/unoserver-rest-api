@@ -4,7 +4,7 @@ The simple REST API for unoserver
 
 ## Usage
 
-Unoserver needs to be installed, see [https://github.com/unoconv/unoserver#installation](https://github.com/unoconv/unoserver).
+Unoserver needs to be installed, see [Installation](https://github.com/unoconv/unoserver#installation) guide.
 
 ```sh
 NAME:
