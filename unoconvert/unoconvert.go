@@ -1,5 +1,9 @@
 package unoconvert
 
+import (
+	"os/exec"
+)
+
 var Unoconvert = &UnoconvertOption{
 	Interface:  "127.0.0.1",
 	Port:       "2002",
@@ -18,8 +22,8 @@ func SetPort(port string) {
 	Unoconvert.SetPort(port)
 }
 
-func Run(infile string, outfile string, opts ...string) {
-	Unoconvert.Run(infile, outfile, opts...)
+func Run(infile string, outfile string, opts ...string) error {
+	return Unoconvert.Run(infile, outfile, opts...)
 }
 
 type UnoconvertOption struct {
@@ -40,6 +44,10 @@ func (u *UnoconvertOption) SetPort(port string) {
 	u.Port = port
 }
 
-func (u *UnoconvertOption) Run(infile string, outfile string, opts ...string) {
-	// Run
+func (u *UnoconvertOption) Run(infile string, outfile string, opts ...string) error {
+	files := []string{infile, outfile}
+	args := append(files, opts...)
+
+	cmd := exec.Command(u.Executable, args...)
+	return cmd.Run()
 }
