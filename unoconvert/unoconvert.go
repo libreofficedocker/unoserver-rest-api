@@ -18,6 +18,10 @@ func SetPort(port string) {
 	Unoconvert.SetPort(port)
 }
 
+func Run(infile string, outfile string, opts ...string) {
+	Unoconvert.Run(infile, outfile, opts...)
+}
+
 type UnoconvertOption struct {
 	Interface  string
 	Port       string
@@ -34,4 +38,8 @@ func (u *UnoconvertOption) SetInterface(interf string) {
 
 func (u *UnoconvertOption) SetPort(port string) {
 	u.Port = port
+}
+
+func (u *UnoconvertOption) Run(infile string, outfile string, opts ...string) {
+	// Run
 }
