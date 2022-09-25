@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net"
 	"os"
 
@@ -11,6 +12,10 @@ import (
 )
 
 var release = "0.1.2"
+
+func init() {
+	log.SetPrefix("unoserver-rest-api ")
+}
 
 func main() {
 	app := cli.NewApp()

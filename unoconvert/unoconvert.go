@@ -1,6 +1,7 @@
 package unoconvert
 
 import (
+	"log"
 	"os/exec"
 )
 
@@ -48,6 +49,8 @@ func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 	files := []string{infile, outfile}
 	args := append(files, opts...)
 
+	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.Command(u.Executable, args...)
+
 	return cmd.Run()
 }
