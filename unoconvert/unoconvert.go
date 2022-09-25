@@ -4,47 +4,47 @@ import (
 	"os/exec"
 )
 
-var Unoconvert = &UnoconvertOption{
+var unoconvert = &Unoconvert{
 	Interface:  "127.0.0.1",
 	Port:       "2002",
 	Executable: "unoconvert",
 }
 
 func SetExecutable(executable string) {
-	Unoconvert.SetExecutable(executable)
+	unoconvert.SetExecutable(executable)
 }
 
 func SetInterface(interf string) {
-	Unoconvert.SetInterface(interf)
+	unoconvert.SetInterface(interf)
 }
 
 func SetPort(port string) {
-	Unoconvert.SetPort(port)
+	unoconvert.SetPort(port)
 }
 
 func Run(infile string, outfile string, opts ...string) error {
-	return Unoconvert.Run(infile, outfile, opts...)
+	return unoconvert.Run(infile, outfile, opts...)
 }
 
-type UnoconvertOption struct {
+type Unoconvert struct {
 	Interface  string
 	Port       string
 	Executable string
 }
 
-func (u *UnoconvertOption) SetExecutable(executable string) {
+func (u *Unoconvert) SetExecutable(executable string) {
 	u.Executable = executable
 }
 
-func (u *UnoconvertOption) SetInterface(interf string) {
+func (u *Unoconvert) SetInterface(interf string) {
 	u.Interface = interf
 }
 
-func (u *UnoconvertOption) SetPort(port string) {
+func (u *Unoconvert) SetPort(port string) {
 	u.Port = port
 }
 
-func (u *UnoconvertOption) Run(infile string, outfile string, opts ...string) error {
+func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 	files := []string{infile, outfile}
 	args := append(files, opts...)
 
