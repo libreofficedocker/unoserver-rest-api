@@ -1,6 +1,7 @@
 package server
 
 import (
+	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -26,11 +27,15 @@ func RequestHandler(c *gin.Context) {
 		return
 	}
 
-	if form.Name != "" {
+	var tempFilename = "*"
+
+	if form.Name == "" {
 		form.Name = form.File.Filename
 	}
 
-	inFile, _ := os.CreateTemp(deport.WorkDir, "*-"+form.Name)
+	tempFilename += "-" + form.Name
+
+	inFile, _ := os.CreateTemp(deport.WorkDir, tempFilename)
 	filePath := inFile.Name()
 
 	// Save file to working directory
@@ -41,11 +46,12 @@ func RequestHandler(c *gin.Context) {
 	}
 
 	// Prepare output file path
-	outFile, _ := os.CreateTemp(deport.WorkDir, "*-"+form.Name+"."+form.ConvertTo)
+	outFile, _ := os.CreateTemp(deport.WorkDir, tempFilename+"."+form.ConvertTo)
 
 	// Run unoconvert command with options
 	err = unoconvert.Run(inFile.Name(), outFile.Name(), form.Options...)
 	if err != nil {
+		log.Printf("unoconvert error: %s", err)
 		c.String(http.StatusInternalServerError, "unoconvert unknown error")
 		return
 	}
