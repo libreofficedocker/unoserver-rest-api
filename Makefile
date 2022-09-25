@@ -23,7 +23,7 @@ docker-build: build-linux
 	docker build --pull --rm -f "Dockerfile" -t ${DOCKER_IMAGE} "."
 
 docker-run:
-	docker run -it --rm  -p "2004:2003" \
+	docker run -it --rm  -p "2003:2003" \
 		${DOCKER_IMAGE}
 
 clean:

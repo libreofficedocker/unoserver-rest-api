@@ -1,2 +1,3 @@
 #!/command/with-contenv sh
-unoserver-rest-api --unoconvert-bin xunoconvert
+
+exec unoserver-rest-api
