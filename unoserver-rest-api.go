@@ -11,7 +11,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-var release = "0.1.2"
+var release = "0.1.3"
 
 func init() {
 	log.SetPrefix("unoserver-rest-api ")
