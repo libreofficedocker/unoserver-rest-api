@@ -29,8 +29,9 @@ curl -s -v \
    --request POST \
    --url http://127.0.0.1:2004/request \
    --header 'Content-Type: multipart/form-data' \
-   --form "file=@/paht/to/your/file.xlsx" \
-   --form 'convert-to=pdf'
+   --form "file=@/path/to/your/file.xlsx" \
+   --form 'convert-to=pdf' \
+   -o 'file.pdf'
 ```
 
 - `file`: Type of `File`, required
@@ -43,9 +44,10 @@ curl -s -v \
    --request POST \
    --url http://127.0.0.1:2004/request \
    --header 'Content-Type: multipart/form-data' \
-   --form "file=@/paht/to/your/file.xlsx" \
+   --form "file=@/path/to/your/file.xlsx" \
    --form 'convert-to=pdf' \
-   --form 'opts[]=--landscape'
+   --form 'opts[]=--landscape' \
+   -o 'file.pdf'
 ```
 
 - `file`: Type of `File`, required
