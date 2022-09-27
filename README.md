@@ -31,7 +31,7 @@ curl -s -v \
    --header 'Content-Type: multipart/form-data' \
    --form "file=@/path/to/your/file.xlsx" \
    --form 'convert-to=pdf' \
-   -o 'file.pdf'
+   --output 'file.pdf'
 ```
 
 - `file`: Type of `File`, required
@@ -47,7 +47,7 @@ curl -s -v \
    --form "file=@/path/to/your/file.xlsx" \
    --form 'convert-to=pdf' \
    --form 'opts[]=--landscape' \
-   -o 'file.pdf'
+   --output 'file.pdf'
 ```
 
 - `file`: Type of `File`, required
