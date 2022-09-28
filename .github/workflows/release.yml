@@ -15,6 +15,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.19.0'
+
       - name: Build s6-overlay-nginx-module
         run: |
           make
