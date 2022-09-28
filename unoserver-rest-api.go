@@ -40,8 +40,12 @@ func main() {
 			EnvVar: "UNOCONVERT_EXECUTABLE_PATH",
 		},
 	}
-	app.Author = "Socheat Sok"
-	app.Email = ""
+	app.Authors = []cli.Author{
+		{
+			Name:  "libreoffice-docker",
+			Email: "https://github.com/libreoffice-docker/unoserver-rest-api",
+		},
+	}
 	app.Action = mainAction
 
 	if err := app.Run(os.Args); err != nil {
