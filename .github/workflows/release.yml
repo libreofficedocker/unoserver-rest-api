@@ -33,7 +33,7 @@ jobs:
           cd bin ; for f in unoserver-rest-api* ; do sha256sum "$f" > "$f".sha256 ; done
           cd output ; for f in *.tar* ; do sha256sum "$f" > "$f".sha256 ; done
 
-      - name: Upload module
+      - name: Upload releases
         uses: softprops/action-gh-release@v1
         with:
           files: |
