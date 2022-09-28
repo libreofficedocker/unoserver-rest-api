@@ -1,6 +1,7 @@
 package unoconvert
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 )
@@ -46,8 +47,17 @@ func (u *Unoconvert) SetPort(port string) {
 }
 
 func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
+	var args = []string{}
+
+	connections := []string{
+		fmt.Sprintf("--interface=%s", u.Interface),
+		fmt.Sprintf("--port=%s", u.Port),
+	}
+
 	files := []string{infile, outfile}
-	args := append(files, opts...)
+
+	args = append(connections, files...)
+	args = append(args, opts...)
 
 	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.Command(u.Executable, args...)
