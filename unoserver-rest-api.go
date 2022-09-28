@@ -25,7 +25,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "addr",
-			Value: "0.0.0.0:2003",
+			Value: "0.0.0.0:2004",
 			Usage: "The addr used by the unoserver api server",
 		},
 		cli.StringFlag{
