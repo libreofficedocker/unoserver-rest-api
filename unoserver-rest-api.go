@@ -5,8 +5,8 @@ import (
 	"net"
 	"os"
 
+	"github.com/socheatsok78/unoserver-rest-api/api"
 	"github.com/socheatsok78/unoserver-rest-api/deport"
-	"github.com/socheatsok78/unoserver-rest-api/server"
 	"github.com/socheatsok78/unoserver-rest-api/unoconvert"
 	"github.com/urfave/cli"
 )
@@ -65,5 +65,5 @@ func mainAction(c *cli.Context) {
 
 	// Start the API server
 	addr := c.String("addr")
-	server.ListenAndServe(addr)
+	api.ListenAndServe(addr)
 }
