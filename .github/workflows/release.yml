@@ -23,6 +23,7 @@ jobs:
       - run: |
           cd bin ; for f in * ; do sha256sum "$f" > "$f".sha256 ; done
           cd output ; for f in *.tar* ; do sha256sum "$f" > "$f".sha256 ; done
+
       - name: Upload module
         uses: softprops/action-gh-release@v1
         with:
