@@ -18,6 +18,25 @@ GLOBAL OPTIONS:
    --version, -v            print the version
 ```
 
+### Using with Docker
+
+You can use `unoserver-rest-api` with [libreoffice-docker/libreoffice-unoserver-alpine](https://github.com/libreoffice-docker/libreoffice-unoserver-alpine) or [libreoffice-docker/libreoffice-unoserver-ubuntu](https://github.com/libreoffice-docker/libreoffice-unoserver-ubuntu) with the following commands for  `Dockerfile`.
+
+```Dockerfile
+FROM libreoffice-docker/libreoffice-unoserver:nightly
+
+# The unoserver-rest-api version number
+ARG UNOSERVER_REST_API_VERSION=0.2.0
+ADD https://github.com/libreoffice-docker/unoserver-rest-api/releases/download/v${UNOSERVER_REST_API_VERSION}/unoserver-rest-api-linux /usr/bin/unoserver-rest-api
+ADD https://github.com/libreoffice-docker/unoserver-rest-api/releases/download/v${UNOSERVER_REST_API_VERSION}/s6-overlay-module.tar.zx /tmp
+ADD https://github.com/libreoffice-docker/unoserver-rest-api/releases/download/v${UNOSERVER_REST_API_VERSION}/s6-overlay-module.tar.zx.sha256 /tmp
+RUN chmod +x /usr/bin/unoserver-rest-api; \
+    cd /tmp && sha256sum -c *.sha256 && \
+    tar -C / -Jxpf /tmp/s6-overlay-module.tar.zx && \
+    rm -rf /tmp/*.tar*
+EXPOSE 2004
+```
+
 ## API
 
 There is only one POST `/request` API.
