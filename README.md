@@ -11,7 +11,7 @@ NAME:
    unoserver-rest-api - The simple REST API for unoserver and unoconvert
 
 GLOBAL OPTIONS:
-   --addr value             The addr used by the unoserver api server (default: "0.0.0.0:2003")
+   --addr value             The addr used by the unoserver api server (default: "0.0.0.0:2004")
    --unoconvert-addr value  The addr used by the unoconvert (default: "127.0.0.1:2002")
    --unoconvert-bin value   Set the unoconvert executable path. (default: "unoconvert") [$UNOCONVERT_EXECUTABLE_PATH]
    --help, -h               show help
@@ -35,7 +35,7 @@ curl -s -v \
 ```
 
 - `file`: Type of `File`, required
-- `convert-to`: Typeof `String`, required
+- `convert-to`: Type of `String`, required
 
 **Advance payload**
 
@@ -51,7 +51,7 @@ curl -s -v \
 ```
 
 - `file`: Type of `File`, required
-- `convert-to`: Typeof `String`, required
+- `convert-to`: Type of `String`, required
 - `opts`: Type of `String[]`
 
 ## License
