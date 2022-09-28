@@ -18,7 +18,7 @@ jobs:
       - name: Build s6-overlay-nginx-module
         run: |
           make
-          make build
+          make build VERSION=${{ github.event.release.tag_name }}
 
       - run: |
           cd bin ; for f in * ; do sha256sum "$f" > "$f".sha256 ; done
