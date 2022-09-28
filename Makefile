@@ -13,7 +13,7 @@ install:
 run:
 	@go run unoserver-rest-api.go
 
-build: build-linux build-darwin s6-overlay-module
+build: build-linux build-darwin
 
 build-linux:
 	GOOS=linux go build -ldflags="-s -w -X main.Version=${VERSION}" -o bin/unoserver-rest-api-linux unoserver-rest-api.go
