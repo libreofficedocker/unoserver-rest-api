@@ -19,13 +19,18 @@ jobs:
         with:
           go-version: '>=1.19.0'
 
-      - name: Build s6-overlay-nginx-module
+      - name: Build unoserver-rest-api
         run: |
           make
           make build VERSION=${{ github.event.release.tag_name }}
 
-      - run: |
-          cd bin ; for f in * ; do sha256sum "$f" > "$f".sha256 ; done
+      - name: Build s6-overlay-module
+        run: |
+          make s6-overlay-module
+
+      - name: Generate checksum
+        run: |
+          cd bin ; for f in unoserver-rest-api* ; do sha256sum "$f" > "$f".sha256 ; done
           cd output ; for f in *.tar* ; do sha256sum "$f" > "$f".sha256 ; done
 
       - name: Upload module
