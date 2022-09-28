@@ -11,7 +11,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-var release = "0.1.3"
+var Version = "unstable"
 
 func init() {
 	log.SetPrefix("unoserver-rest-api ")
@@ -20,7 +20,7 @@ func init() {
 func main() {
 	app := cli.NewApp()
 	app.Name = "unoserver-rest-api"
-	app.Version = release
+	app.Version = Version
 	app.Usage = "The simple REST API for unoserver and unoconvert"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
