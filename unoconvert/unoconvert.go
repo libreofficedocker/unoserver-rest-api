@@ -1,9 +1,15 @@
 package unoconvert
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os/exec"
+	"time"
+)
+
+var (
+	DefaultContextTimeout = 30 * time.Second
 )
 
 var unoconvert = &Unoconvert{
@@ -26,6 +32,10 @@ func SetPort(port string) {
 
 func Run(infile string, outfile string, opts ...string) error {
 	return unoconvert.Run(infile, outfile, opts...)
+}
+
+func RunContext(ctx context.Context, infile string, outfile string, opts ...string) error {
+	return unoconvert.RunContext(ctx, infile, outfile, opts...)
 }
 
 type Unoconvert struct {
@@ -62,5 +72,27 @@ func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.Command(u.Executable, args...)
 
+	return cmd.Run()
+}
+
+func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile string, opts ...string) error {
+	ctx, cancel := context.WithTimeout(ctx, DefaultContextTimeout)
+	defer cancel()
+
+	var args = []string{}
+
+	connections := []string{
+		fmt.Sprintf("--interface=%s", u.Interface),
+		fmt.Sprintf("--port=%s", u.Port),
+	}
+
+	files := []string{infile, outfile}
+
+	args = append(connections, files...)
+	args = append(args, opts...)
+
+	log.Printf("Command: %s %s", u.Executable, args)
+
+	cmd := exec.CommandContext(ctx, u.Executable, args...)
 	return cmd.Run()
 }

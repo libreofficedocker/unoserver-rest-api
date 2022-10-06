@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -48,11 +50,12 @@ func RequestHandler(c *gin.Context) {
 	// Prepare output file path
 	outFile, _ := os.CreateTemp(deport.WorkDir, tempFilename+"."+form.ConvertTo)
 
-	// Run unoconvert command with options
-	err = unoconvert.Run(inFile.Name(), outFile.Name(), form.Options...)
+	// Run unoconvert command with optionsq
+	err = unoconvert.RunContext(context.Background(), inFile.Name(), outFile.Name(), form.Options...)
+
 	if err != nil {
 		log.Printf("unoconvert error: %s", err)
-		c.String(http.StatusInternalServerError, "unoconvert unknown error")
+		c.String(http.StatusInternalServerError, fmt.Sprintf("unoconvert error: %s", err))
 		return
 	}
 
