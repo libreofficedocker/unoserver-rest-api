@@ -1,4 +1,4 @@
-module github.com/socheatsok78/unoserver-rest-api
+module github.com/libreoffice-docker/unoserver-rest-api
 
 go 1.19
 
