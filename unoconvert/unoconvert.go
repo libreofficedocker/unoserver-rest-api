@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	DefaultContextTimeout = 30 * time.Second
+	DefaultContextTimeout = 1 * time.Minute
 )
 
 var unoconvert = &Unoconvert{
