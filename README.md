@@ -11,11 +11,12 @@ NAME:
    unoserver-rest-api - The simple REST API for unoserver and unoconvert
 
 GLOBAL OPTIONS:
-   --addr value             The addr used by the unoserver api server (default: "0.0.0.0:2004")
-   --unoconvert-addr value  The addr used by the unoconvert (default: "127.0.0.1:2002")
-   --unoconvert-bin value   Set the unoconvert executable path. (default: "unoconvert") [$UNOCONVERT_EXECUTABLE_PATH]
-   --help, -h               show help
-   --version, -v            print the version
+   --addr value                The addr used by the unoserver api server (default: "0.0.0.0:2004")
+   --unoserver-addr value      The unoserver addr used by the unoconvert (default: "127.0.0.1:2002") [$UNOSERVER_ADDR]
+   --unoconvert-bin value      Set the unoconvert executable path. (default: "unoconvert") [$UNOCONVERT_EXECUTABLE_PATH]
+   --unoconvert-timeout value  Set the unoconvert run timeout (default: 0s) [$UNOCONVERT_TIMEOUT]
+   --help, -h                  show help
+   --version, -v               print the version
 ```
 
 ### Using with Docker
