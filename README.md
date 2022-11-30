@@ -21,7 +21,7 @@ GLOBAL OPTIONS:
 
 ### Using with Docker
 
-You can use `unoserver-rest-api` with [libreoffice-docker/libreoffice-unoserver-alpine](https://github.com/libreoffice-docker/libreoffice-unoserver-alpine) or [libreoffice-docker/libreoffice-unoserver-ubuntu](https://github.com/libreoffice-docker/libreoffice-unoserver-ubuntu) by modifying the `Dockerfile` provided by the template.
+You can use `unoserver-rest-api` with [libreoffice-docker/libreoffice-unoserver-alpine](https://github.com/libreoffice-docker/libreoffice-unoserver) by modifying the `Dockerfile` provided by the template.
 
 ```Dockerfile
 # ...
