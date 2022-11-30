@@ -42,9 +42,10 @@ func main() {
 			EnvVar: "UNOCONVERT_EXECUTABLE_PATH",
 		},
 		cli.DurationFlag{
-			Name:  "unoconvert-timeout",
-			Value: 0 * time.Minute,
-			Usage: "Set the unoconvert run timeout",
+			Name:   "unoconvert-timeout",
+			Value:  0 * time.Minute,
+			Usage:  "Set the unoconvert run timeout",
+			EnvVar: "UNOCONVERT_TIMEOUT",
 		},
 	}
 	app.Authors = []cli.Author{
