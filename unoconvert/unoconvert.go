@@ -9,7 +9,11 @@ import (
 )
 
 var (
-	DefaultContextTimeout = 1 * time.Minute
+	DefaultContextTimeout = 0 * time.Minute
+)
+
+var (
+	ContextTimeout = DefaultContextTimeout
 )
 
 var unoconvert = &Unoconvert{
@@ -28,6 +32,10 @@ func SetInterface(interf string) {
 
 func SetPort(port string) {
 	unoconvert.SetPort(port)
+}
+
+func SetContextTimeout(timeout time.Duration) {
+	unoconvert.SetContextTimeout(timeout)
 }
 
 func Run(infile string, outfile string, opts ...string) error {
@@ -56,6 +64,10 @@ func (u *Unoconvert) SetPort(port string) {
 	u.Port = port
 }
 
+func (u *Unoconvert) SetContextTimeout(timeout time.Duration) {
+	ContextTimeout = timeout
+}
+
 func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 	var args = []string{}
 
@@ -76,7 +88,7 @@ func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 }
 
 func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile string, opts ...string) error {
-	ctx, cancel := context.WithTimeout(ctx, DefaultContextTimeout)
+	ctx, cancel := context.WithTimeout(ctx, ContextTimeout)
 	defer cancel()
 
 	var args = []string{}

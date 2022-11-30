@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"time"
 
 	"github.com/libreoffice-docker/unoserver-rest-api/api"
 	"github.com/libreoffice-docker/unoserver-rest-api/deport"
@@ -39,6 +40,11 @@ func main() {
 			Usage:  "Set the unoconvert executable path.",
 			EnvVar: "UNOCONVERT_EXECUTABLE_PATH",
 		},
+		cli.DurationFlag{
+			Name:  "unoconvert-timeout",
+			Value: 0 * time.Minute,
+			Usage: "Set the unoconvert run timeout",
+		},
 	}
 	app.Authors = []cli.Author{
 		{
@@ -66,6 +72,7 @@ func mainAction(c *cli.Context) {
 	unoconvert.SetInterface(host)
 	unoconvert.SetPort(port)
 	unoconvert.SetExecutable(c.String("unoconvert-bin"))
+	unoconvert.SetContextTimeout(c.Duration("unoconvert-timeout"))
 
 	// Start the API server
 	addr := c.String("addr")

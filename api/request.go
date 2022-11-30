@@ -50,8 +50,13 @@ func RequestHandler(c *gin.Context) {
 	// Prepare output file path
 	outFile, _ := os.CreateTemp(deport.WorkDir, tempFilename+"."+form.ConvertTo)
 
-	// Run unoconvert command with optionsq
-	err = unoconvert.RunContext(context.Background(), inFile.Name(), outFile.Name(), form.Options...)
+	// Run unoconvert command with options
+	// If context timeout is 0s run without timeout
+	if unoconvert.ContextTimeout == 0 {
+		err = unoconvert.Run(inFile.Name(), outFile.Name(), form.Options...)
+	} else {
+		err = unoconvert.RunContext(context.Background(), inFile.Name(), outFile.Name(), form.Options...)
+	}
 
 	if err != nil {
 		log.Printf("unoconvert error: %s", err)
