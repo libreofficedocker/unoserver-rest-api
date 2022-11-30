@@ -30,9 +30,10 @@ func main() {
 			Usage: "The addr used by the unoserver api server",
 		},
 		cli.StringFlag{
-			Name:  "unoconvert-addr",
-			Value: "127.0.0.1:2002",
-			Usage: "The addr used by the unoconvert",
+			Name:   "unoserver-addr",
+			Value:  "127.0.0.1:2002",
+			Usage:  "The unoserver addr used by the unoconvert",
+			EnvVar: "UNOSERVER_ADDR",
 		},
 		cli.StringFlag{
 			Name:   "unoconvert-bin",
@@ -67,7 +68,7 @@ func mainAction(c *cli.Context) {
 	defer deport.CleanTemp()
 
 	// Configure unoconvert options
-	unoAddr := c.String("unoconvert-addr")
+	unoAddr := c.String("unoserver-addr")
 	host, port, _ := net.SplitHostPort(unoAddr)
 	unoconvert.SetInterface(host)
 	unoconvert.SetPort(port)
