@@ -105,6 +105,10 @@ func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile stri
 
 	log.Printf("Command: %s %s", u.Executable, args)
 
+	if _, err := exec.LookPath(u.Executable); err == nil {
+		return err
+	}
+
 	cmd := exec.CommandContext(ctx, u.Executable, args...)
 	return cmd.Run()
 }
