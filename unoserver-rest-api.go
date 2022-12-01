@@ -39,7 +39,7 @@ func main() {
 			Name:   "unoconvert-bin",
 			Value:  "unoconvert",
 			Usage:  "Set the unoconvert executable path.",
-			EnvVar: "UNOCONVERT_EXECUTABLE_PATH",
+			EnvVar: "UNOCONVERT_BIN",
 		},
 		cli.DurationFlag{
 			Name:   "unoconvert-timeout",
