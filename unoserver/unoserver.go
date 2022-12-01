@@ -85,12 +85,7 @@ func (u *Unoserver) Run() error {
 		fmt.Sprintf("--accept=%s", connections),
 	)
 
-	libreoffice, err := exec.LookPath(u.Executable)
-	if err != nil {
-		return err
-	}
-
-	log.Printf("Command: %s %s", libreoffice, args)
-	cmd := exec.Command(libreoffice, args...)
+	log.Printf("Command: %s %s", u.Executable, args)
+	cmd := exec.Command(u.Executable, args...)
 	return cmd.Start()
 }
