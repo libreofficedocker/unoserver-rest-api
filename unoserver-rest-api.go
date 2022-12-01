@@ -8,7 +8,9 @@ import (
 
 	"github.com/libreoffice-docker/unoserver-rest-api/api"
 	"github.com/libreoffice-docker/unoserver-rest-api/deport"
+	"github.com/libreoffice-docker/unoserver-rest-api/unobridge"
 	"github.com/libreoffice-docker/unoserver-rest-api/unoconvert"
+	"github.com/libreoffice-docker/unoserver-rest-api/unoserver"
 	"github.com/urfave/cli"
 )
 
@@ -68,15 +70,40 @@ func mainAction(c *cli.Context) {
 	// Cleanup temporary working directory after finished
 	defer deport.CleanTemp()
 
-	// Configure unoconvert options
 	unoAddr := c.String("unoserver-addr")
 	host, port, _ := net.SplitHostPort(unoAddr)
-	unoconvert.SetInterface(host)
-	unoconvert.SetPort(port)
+
+	// Initialize unobridge
+	unobridge.SetInterface(host)
+	unobridge.SetPort(port)
+
+	// Bridge unoserver and unoconvert
+	unoserver.SetInterface(unobridge.GetInterface())
+	unoserver.SetPort(unobridge.GetPort())
+	unoserver.SetExecutable(unobridge.GetLibreofficeBinary())
+
+	unoconvert.SetInterface(unobridge.GetInterface())
+	unoconvert.SetPort(unobridge.GetPort())
+
+	// Configure unoconvert options
 	unoconvert.SetExecutable(c.String("unoconvert-bin"))
 	unoconvert.SetContextTimeout(c.Duration("unoconvert-timeout"))
 
+	go func() {
+		ListenAndServeUnoserver()
+	}()
+
 	// Start the API server
 	addr := c.String("addr")
+	ListenAndServe(addr)
+}
+
+func ListenAndServe(addr string) {
 	api.ListenAndServe(addr)
+}
+
+func ListenAndServeUnoserver() {
+	if err := unoserver.Run(); err != nil {
+		log.Fatal(err)
+	}
 }
