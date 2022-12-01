@@ -1,6 +1,7 @@
 package unoserver
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os/exec"
@@ -30,6 +31,10 @@ func SetUserInstallation(userInstallation string) {
 
 func Run() error {
 	return unoserver.Run()
+}
+
+func RunContext(ctx context.Context) error {
+	return unoserver.RunContext(ctx)
 }
 
 type Unoserver struct {
@@ -87,5 +92,40 @@ func (u *Unoserver) Run() error {
 
 	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.Command(u.Executable, args...)
-	return cmd.Start()
+	return cmd.Run()
+}
+
+func (u *Unoserver) RunContext(ctx context.Context) error {
+	connections := fmt.Sprintf(
+		"socket,host=%s,port=%s,tcpNoDelay=1;urp;StarOffice.ComponentContext",
+		u.Interface, u.Port,
+	)
+
+	var args = []string{
+		"--headless",
+		"--invisible",
+		"--nocrashreport",
+		"--nodefault",
+		"--nologo",
+		"--nofirststartwizard",
+		"--norestore",
+	}
+
+	// Set UserInstallation path
+	if u.UserInstallation != "" {
+		args = append(
+			args,
+			fmt.Sprintf("-env:UserInstallation=%s", u.UserInstallation),
+		)
+	}
+
+	// Add uno connection parameters
+	args = append(
+		args,
+		fmt.Sprintf("--accept=%s", connections),
+	)
+
+	log.Printf("Command: %s %s", u.Executable, args)
+	cmd := exec.CommandContext(ctx, u.Executable, args...)
+	return cmd.Run()
 }

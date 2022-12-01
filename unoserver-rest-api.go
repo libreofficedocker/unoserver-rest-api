@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net"
 	"os"
@@ -11,6 +12,7 @@ import (
 	"github.com/libreoffice-docker/unoserver-rest-api/unobridge"
 	"github.com/libreoffice-docker/unoserver-rest-api/unoconvert"
 	"github.com/libreoffice-docker/unoserver-rest-api/unoserver"
+	"github.com/oklog/run"
 	"github.com/urfave/cli"
 )
 
@@ -89,21 +91,25 @@ func mainAction(c *cli.Context) {
 	unoconvert.SetExecutable(c.String("unoconvert-bin"))
 	unoconvert.SetContextTimeout(c.Duration("unoconvert-timeout"))
 
-	go func() {
-		ListenAndServeUnoserver()
-	}()
+	// Manage goroutine group
+	g := run.Group{}
+
+	// Start the LibreOffice unoserver
+	ctx, cancel := context.WithCancel(context.Background())
+	g.Add(func() error {
+		return unoserver.RunContext(ctx)
+	}, func(err error) {
+		cancel()
+		log.Print("Sending shutdown signal to LibreOffice")
+	})
 
 	// Start the API server
 	addr := c.String("addr")
-	ListenAndServe(addr)
-}
+	g.Add(func() error {
+		return api.ListenAndServe(addr)
+	}, func(err error) {
+		//
+	})
 
-func ListenAndServe(addr string) {
-	api.ListenAndServe(addr)
-}
-
-func ListenAndServeUnoserver() {
-	if err := unoserver.Run(); err != nil {
-		log.Fatal(err)
-	}
+	g.Run()
 }

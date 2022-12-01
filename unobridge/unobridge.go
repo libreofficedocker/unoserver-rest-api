@@ -1,6 +1,10 @@
 package unobridge
 
-import "runtime"
+import (
+	"fmt"
+	"net"
+	"runtime"
+)
 
 var unobridge = &Unobridge{
 	Interface: "127.0.0.1",
@@ -29,6 +33,16 @@ func GetLibreofficeBinary() string {
 	}
 
 	return "libreoffice"
+}
+
+func UseRandomAvailablePort() {
+	listener, err := net.Listen("tcp", ":0")
+	if err != nil {
+		panic(err)
+	}
+
+	port := listener.Addr().(*net.TCPAddr).Port
+	unobridge.Port = fmt.Sprint(port)
 }
 
 type Unobridge struct {

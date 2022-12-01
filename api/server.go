@@ -13,7 +13,7 @@ func init() {
 	gin.DisableConsoleColor()
 }
 
-func ListenAndServe(addr string) {
+func ListenAndServe(addr string) error {
 	router := gin.Default()
 	router.SetTrustedProxies(nil)
 
@@ -30,5 +30,9 @@ func ListenAndServe(addr string) {
 		log.Printf("Server is running pid is %d", syscall.Getpid())
 	}
 
-	pm.ListenAndServe()
+	if err := pm.ListenAndServe(); err != nil {
+		return err
+	}
+
+	return nil
 }
