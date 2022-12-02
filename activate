@@ -1,0 +1,12 @@
+CURDIR=$(pwd)
+
+# LibreOffice
+LIBREOFFICE_BASE="/Applications/LibreOffice.app"
+URE_BOOTSTRAP="vnd.sun.star.pathname:$LIBREOFFICE_BASE/fundamentalrc"
+PATH="$LIBREOFFICE_BASE/Contents/Resources:$PATH"
+UNO_PATH="$LIBREOFFICE_BASE/Contents/MacOS"
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$LIBREOFFICE_BASE/Contents/Resources"
+PYTHONPATH="$UNO_PATH:$PYTHONPATH"
+
+# Path
+PATH="$CURDIR/tempfs/bin:$PATH"
