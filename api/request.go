@@ -50,6 +50,9 @@ func RequestHandler(c *gin.Context) {
 	// Prepare output file path
 	outFile, _ := os.CreateTemp(deport.WorkDir, tempFilename+"."+form.ConvertTo)
 
+	// Set busy state for healthcheck
+	Healcheck.SetBusy()
+
 	// Run unoconvert command with options
 	// If context timeout is 0s run without timeout
 	if unoconvert.ContextTimeout == 0 {
@@ -59,10 +62,16 @@ func RequestHandler(c *gin.Context) {
 	}
 
 	if err != nil {
+		// Set available state for healthcheck
+		Healcheck.SetAvailable()
+
 		log.Printf("unoconvert error: %s", err)
 		c.String(http.StatusInternalServerError, fmt.Sprintf("unoconvert error: %s", err))
 		return
 	}
+
+	// Set available state for healthcheck
+	Healcheck.SetAvailable()
 
 	// Send the converted file to body stream
 	c.File(outFile.Name())
