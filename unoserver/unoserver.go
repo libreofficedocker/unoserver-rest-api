@@ -21,10 +21,9 @@ var DefaultLibreofficeOptions = []string{
 }
 
 var unoserver = &Unoserver{
-	Interface:        "127.0.0.1",
-	Port:             "2002",
-	Executable:       "libreoffice",
-	UserInstallation: "file:///Users/socheat/Workspaces/libreoffice-docker/unoserver-rest-api/tempfs/_works",
+	Interface:  "127.0.0.1",
+	Port:       "2002",
+	Executable: "libreoffice",
 }
 
 func SetExecutable(executable string) {
