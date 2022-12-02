@@ -96,24 +96,33 @@ func mainAction(c *cli.Context) {
 	}
 
 	// Manage goroutine group
-	var g run.Group
+	g := run.Group{}
+	ctx, cancel := context.WithCancel(context.Background())
 
 	// Start the LibreOffice unoserver
-	ctx, cancel := context.WithCancel(context.Background())
-	g.Add(func() error {
-		return unoserver.RunContext(ctx)
-	}, func(err error) {
-		cancel()
-		log.Print("Sending shutdown signal to LibreOffice")
-	})
+	{
+		ctx, cancel := context.WithCancel(ctx)
+		g.Add(func() error {
+			return unoserver.RunContext(ctx)
+		}, func(err error) {
+			log.Print("Sending shutdown signal to LibreOffice")
+			cancel()
+		})
+	}
 
 	// Start the API server
 	addr := c.String("addr")
 	g.Add(func() error {
-		return api.ListenAndServe(addr)
+		api.ListenAndServe(addr)
+		return nil
 	}, func(err error) {
 		log.Print("Sending shutdown signal to REST server")
 	})
+
+	defer func() {
+		log.Print("Cleanup parent context!")
+		cancel()
+	}()
 
 	if err := g.Run(); err != nil {
 		panic(err)
