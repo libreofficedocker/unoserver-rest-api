@@ -4,13 +4,27 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/url"
 	"os/exec"
 )
 
+var DefaultConnection = "socket,host=%s,port=%s,tcpNoDelay=1;urp;StarOffice.ComponentContext"
+
+var DefaultLibreofficeOptions = []string{
+	"--headless",
+	"--invisible",
+	"--nocrashreport",
+	"--nodefault",
+	"--nologo",
+	"--nofirststartwizard",
+	"--norestore",
+}
+
 var unoserver = &Unoserver{
-	Interface:  "127.0.0.1",
-	Port:       "2002",
-	Executable: "libreoffice",
+	Interface:        "127.0.0.1",
+	Port:             "2002",
+	Executable:       "libreoffice",
+	UserInstallation: "file:///Users/socheat/Workspaces/libreoffice-docker/unoserver-rest-api/tempfs/_works",
 }
 
 func SetExecutable(executable string) {
@@ -57,32 +71,18 @@ func (u *Unoserver) SetPort(port string) {
 }
 
 func (u *Unoserver) SetUserInstallation(userInstallation string) {
-	u.UserInstallation = userInstallation
+	path, _ := url.JoinPath("file://", userInstallation)
+	u.UserInstallation = path
 }
 
 func (u *Unoserver) Run() error {
-	connections := fmt.Sprintf(
-		"socket,host=%s,port=%s,tcpNoDelay=1;urp;StarOffice.ComponentContext",
-		u.Interface, u.Port,
-	)
+	connections := fmt.Sprintf(DefaultConnection, u.Interface, u.Port)
 
-	var args = []string{
-		"--headless",
-		"--invisible",
-		"--nocrashreport",
-		"--nodefault",
-		"--nologo",
-		"--nofirststartwizard",
-		"--norestore",
-	}
+	var args = []string{}
+	args = append(args, DefaultLibreofficeOptions...)
 
 	// Set UserInstallation path
-	if u.UserInstallation != "" {
-		args = append(
-			args,
-			fmt.Sprintf("-env:UserInstallation=%s", u.UserInstallation),
-		)
-	}
+	args = WithUserInstallation(u, args)
 
 	// Add uno connection parameters
 	args = append(
@@ -96,28 +96,13 @@ func (u *Unoserver) Run() error {
 }
 
 func (u *Unoserver) RunContext(ctx context.Context) error {
-	connections := fmt.Sprintf(
-		"socket,host=%s,port=%s,tcpNoDelay=1;urp;StarOffice.ComponentContext",
-		u.Interface, u.Port,
-	)
+	connections := fmt.Sprintf(DefaultConnection, u.Interface, u.Port)
 
-	var args = []string{
-		"--headless",
-		"--invisible",
-		"--nocrashreport",
-		"--nodefault",
-		"--nologo",
-		"--nofirststartwizard",
-		"--norestore",
-	}
+	var args = []string{}
+	args = append(args, DefaultLibreofficeOptions...)
 
 	// Set UserInstallation path
-	if u.UserInstallation != "" {
-		args = append(
-			args,
-			fmt.Sprintf("-env:UserInstallation=%s", u.UserInstallation),
-		)
-	}
+	args = WithUserInstallation(u, args)
 
 	// Add uno connection parameters
 	args = append(
@@ -128,4 +113,15 @@ func (u *Unoserver) RunContext(ctx context.Context) error {
 	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.CommandContext(ctx, u.Executable, args...)
 	return cmd.Run()
+}
+
+func WithUserInstallation(u *Unoserver, args []string) []string {
+	if u.UserInstallation != "" {
+		args = append(
+			args,
+			fmt.Sprintf("-env:UserInstallation=%s", u.UserInstallation),
+		)
+	}
+
+	return args
 }

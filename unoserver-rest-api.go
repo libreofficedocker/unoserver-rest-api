@@ -80,19 +80,23 @@ func mainAction(c *cli.Context) {
 	unobridge.SetPort(port)
 
 	// Bridge unoserver and unoconvert
-	unoserver.SetInterface(unobridge.GetInterface())
-	unoserver.SetPort(unobridge.GetPort())
-	unoserver.SetExecutable(unobridge.GetLibreofficeBinary())
+	{
+		unoserver.SetInterface(unobridge.GetInterface())
+		unoserver.SetPort(unobridge.GetPort())
+		unoserver.SetExecutable(unobridge.GetLibreofficeBinary())
 
-	unoconvert.SetInterface(unobridge.GetInterface())
-	unoconvert.SetPort(unobridge.GetPort())
+		unoconvert.SetInterface(unobridge.GetInterface())
+		unoconvert.SetPort(unobridge.GetPort())
+	}
 
 	// Configure unoconvert options
-	unoconvert.SetExecutable(c.String("unoconvert-bin"))
-	unoconvert.SetContextTimeout(c.Duration("unoconvert-timeout"))
+	{
+		unoconvert.SetExecutable(c.String("unoconvert-bin"))
+		unoconvert.SetContextTimeout(c.Duration("unoconvert-timeout"))
+	}
 
 	// Manage goroutine group
-	g := run.Group{}
+	var g run.Group
 
 	// Start the LibreOffice unoserver
 	ctx, cancel := context.WithCancel(context.Background())
@@ -108,8 +112,10 @@ func mainAction(c *cli.Context) {
 	g.Add(func() error {
 		return api.ListenAndServe(addr)
 	}, func(err error) {
-		//
+		log.Print("Sending shutdown signal to REST server")
 	})
 
-	g.Run()
+	if err := g.Run(); err != nil {
+		panic(err)
+	}
 }
