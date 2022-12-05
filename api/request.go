@@ -9,7 +9,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/libreoffice-docker/unoserver-rest-api/deport"
+	"github.com/libreoffice-docker/unoserver-rest-api/depot"
 	"github.com/libreoffice-docker/unoserver-rest-api/unoconvert"
 )
 
@@ -37,7 +37,7 @@ func RequestHandler(c *gin.Context) {
 
 	tempFilename += "-" + form.Name
 
-	inFile, _ := os.CreateTemp(deport.WorkDir, tempFilename)
+	inFile, _ := os.CreateTemp(depot.WorkDir, tempFilename)
 	filePath := inFile.Name()
 
 	// Save file to working directory
@@ -48,7 +48,7 @@ func RequestHandler(c *gin.Context) {
 	}
 
 	// Prepare output file path
-	outFile, _ := os.CreateTemp(deport.WorkDir, tempFilename+"."+form.ConvertTo)
+	outFile, _ := os.CreateTemp(depot.WorkDir, tempFilename+"."+form.ConvertTo)
 
 	// Run unoconvert command with options
 	// If context timeout is 0s run without timeout

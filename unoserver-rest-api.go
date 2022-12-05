@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/libreoffice-docker/unoserver-rest-api/api"
-	"github.com/libreoffice-docker/unoserver-rest-api/deport"
+	"github.com/libreoffice-docker/unoserver-rest-api/depot"
 	"github.com/libreoffice-docker/unoserver-rest-api/unoconvert"
 	"github.com/urfave/cli"
 )
@@ -63,10 +63,10 @@ func main() {
 
 func mainAction(c *cli.Context) {
 	// Create temporary working directory
-	deport.MkdirTemp()
+	depot.MkdirTemp()
 
 	// Cleanup temporary working directory after finished
-	defer deport.CleanTemp()
+	defer depot.CleanTemp()
 
 	// Configure unoconvert options
 	unoAddr := c.String("unoserver-addr")
