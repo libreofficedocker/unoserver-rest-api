@@ -1,4 +1,4 @@
-package deport
+package depot
 
 import (
 	"log"
