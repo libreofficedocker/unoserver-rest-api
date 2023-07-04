@@ -2,6 +2,10 @@
 
 The simple REST API for unoserver
 
+> **⚠️ Caution ⚠️**
+>
+> It is important to know that the  REST API layer DOES NOT provide any type of security whatsoever. It is RECOMMENDED not to expose this container image to the internet.
+
 ## Usage
 
 Unoserver needs to be installed, see [Installation](https://github.com/unoconv/unoserver#installation) guide.
