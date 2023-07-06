@@ -2,7 +2,7 @@
 
 The simple REST API for unoserver
 
-> **⚠️ Caution ⚠️**
+> **Warning**
 >
 > It is important to know that the  REST API layer DOES NOT provide any type of security whatsoever.  
 > It is NOT RECOMMENDED to expose this container image to the internet.
