@@ -37,18 +37,41 @@ func RequestHandler(c *gin.Context) {
 
 	tempFilename += "-" + form.Name
 
-	inFile, _ := os.CreateTemp(depot.WorkDir, tempFilename)
+	inFile, err := os.CreateTemp(depot.WorkDir, tempFilename)
+	if err != nil {
+		log.Println("Create temp file failed", err)
+		c.String(http.StatusInternalServerError, "unknown error")
+		return
+	}
 	filePath := inFile.Name()
+	defer func() {
+		err := os.Remove(filePath)
+		if err != nil {
+			log.Println("Delege temp file failed", err)
+		}
+	}()
 
 	// Save file to working directory
 	err = c.SaveUploadedFile(form.File, filePath)
 	if err != nil {
+		log.Println("Convert failed", err)
 		c.String(http.StatusInternalServerError, "unknown error")
 		return
 	}
 
 	// Prepare output file path
-	outFile, _ := os.CreateTemp(depot.WorkDir, tempFilename+"."+form.ConvertTo)
+	outFile, err := os.CreateTemp(depot.WorkDir, tempFilename+"."+form.ConvertTo)
+	if err != nil {
+		log.Println("Create temp file failed", err)
+		c.String(http.StatusInternalServerError, "unknown error")
+		return
+	}
+	defer func() {
+		err := os.Remove(outFile.Name())
+		if err != nil {
+			log.Println("Delege temp file failed", err)
+		}
+	}()
 
 	// Set busy state for healthcheck
 	Healcheck.SetBusy()
