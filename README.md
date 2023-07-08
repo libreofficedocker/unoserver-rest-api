@@ -33,8 +33,8 @@ You can use `unoserver-rest-api` with [libreoffice-docker/libreoffice-unoserver]
 
 # The unoserver-rest-api version number
 ARG UNOSERVER_REST_API_VERSION=0.4.0
-ADD https://github.com/libreoffice-docker/unoserver-rest-api/releases/download/v${UNOSERVER_REST_API_VERSION}/s6-overlay-module.tar.zx /tmp
-ADD https://github.com/libreoffice-docker/unoserver-rest-api/releases/download/v${UNOSERVER_REST_API_VERSION}/s6-overlay-module.tar.zx.sha256 /tmp
+ADD https://github.com/libreofficedocker/unoserver-rest-api/releases/download/v${UNOSERVER_REST_API_VERSION}/s6-overlay-module.tar.zx /tmp
+ADD https://github.com/libreofficedocker/unoserver-rest-api/releases/download/v${UNOSERVER_REST_API_VERSION}/s6-overlay-module.tar.zx.sha256 /tmp
 RUN cd /tmp && sha256sum -c *.sha256 && \
     tar -C / -Jxpf /tmp/s6-overlay-module.tar.zx && \
     rm -rf /tmp/*.tar*
