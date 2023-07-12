@@ -17,13 +17,13 @@ build: build-linux build-darwin
 
 build-linux:
 	GOOS=linux go build -ldflags="-s -w -X main.Version=${VERSION}" -o bin/unoserver-rest-api-linux unoserver-rest-api.go
-	upx bin/unoserver-rest-api-linux
+	upx -k bin/unoserver-rest-api-linux
 	mkdir -p rootfs/usr/bin
 	cp bin/unoserver-rest-api-linux rootfs/usr/bin/unoserver-rest-api
 
 build-darwin:
 	GOOS=darwin go build -ldflags="-s -w -X main.Version=${VERSION}" -o bin/unoserver-rest-api-darwin unoserver-rest-api.go
-	upx bin/unoserver-rest-api-darwin
+	upx -k bin/unoserver-rest-api-darwin
 
 docker-build: build-linux
 	docker build --pull --rm -f "Dockerfile" -t ${DOCKER_IMAGE} "."
