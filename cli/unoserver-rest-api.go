@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/libreofficedocker/unoserver-rest-api/api"
+	"github.com/libreofficedocker/unoserver-rest-api/server"
 	"github.com/urfave/cli"
 )
 
@@ -32,15 +32,15 @@ func main() {
 			Email: "https://github.com/libreofficedocker/unoserver-rest-api",
 		},
 	}
-	app.Action = mainAction
+	app.Action = action
 
 	if err := app.Run(os.Args); err != nil {
 		os.Exit(1)
 	}
 }
 
-func mainAction(c *cli.Context) {
-	// Start the API server
-	addr := c.String("addr")
-	api.ListenAndServe(addr)
+func action(c *cli.Context) error {
+	s := server.Default()
+
+	return s.Run()
 }
