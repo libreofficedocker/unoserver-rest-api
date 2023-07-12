@@ -28,7 +28,7 @@ func main() {
 	}
 	app.Authors = []cli.Author{
 		{
-			Name:  "libreoffice-docker",
+			Name:  "libreofficedocker",
 			Email: "https://github.com/libreofficedocker/unoserver-rest-api",
 		},
 	}
