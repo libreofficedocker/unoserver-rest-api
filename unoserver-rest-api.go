@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"time"
 
 	"github.com/libreofficedocker/unoserver-rest-api/api"
 	"github.com/urfave/cli"
@@ -25,24 +24,6 @@ func main() {
 			Name:  "addr",
 			Value: "0.0.0.0:2004",
 			Usage: "The addr used by the unoserver api server",
-		},
-		cli.StringFlag{
-			Name:   "unoserver-addr",
-			Value:  "127.0.0.1:2002",
-			Usage:  "The unoserver addr used by the unoconvert",
-			EnvVar: "UNOSERVER_ADDR",
-		},
-		cli.StringFlag{
-			Name:   "unoconvert-bin",
-			Value:  "unoconvert",
-			Usage:  "Set the unoconvert executable path.",
-			EnvVar: "UNOCONVERT_BIN",
-		},
-		cli.DurationFlag{
-			Name:   "unoconvert-timeout",
-			Value:  0 * time.Minute,
-			Usage:  "Set the unoconvert run timeout",
-			EnvVar: "UNOCONVERT_TIMEOUT",
 		},
 	}
 	app.Authors = []cli.Author{
