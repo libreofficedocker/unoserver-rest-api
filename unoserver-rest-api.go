@@ -6,9 +6,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/libreoffice-docker/unoserver-rest-api/api"
-	"github.com/libreoffice-docker/unoserver-rest-api/depot"
-	"github.com/libreoffice-docker/unoserver-rest-api/unoconvert"
+	"github.com/libreofficedocker/unoserver-rest-api/api"
+	"github.com/libreofficedocker/unoserver-rest-api/depot"
+	"github.com/libreofficedocker/unoserver-rest-api/unoconvert"
 	"github.com/urfave/cli"
 )
 
@@ -51,7 +51,7 @@ func main() {
 	app.Authors = []cli.Author{
 		{
 			Name:  "libreoffice-docker",
-			Email: "https://github.com/libreoffice-docker/unoserver-rest-api",
+			Email: "https://github.com/libreofficedocker/unoserver-rest-api",
 		},
 	}
 	app.Action = mainAction

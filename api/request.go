@@ -9,8 +9,8 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/libreoffice-docker/unoserver-rest-api/depot"
-	"github.com/libreoffice-docker/unoserver-rest-api/unoconvert"
+	"github.com/libreofficedocker/unoserver-rest-api/depot"
+	"github.com/libreofficedocker/unoserver-rest-api/unoconvert"
 )
 
 type RequestForm struct {
