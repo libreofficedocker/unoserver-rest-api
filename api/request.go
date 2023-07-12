@@ -1,8 +1,6 @@
 package api
 
 import (
-	"context"
-	"fmt"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -10,7 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/libreofficedocker/unoserver-rest-api/depot"
-	"github.com/libreofficedocker/unoserver-rest-api/unoconvert"
 )
 
 type RequestForm struct {
@@ -75,18 +72,4 @@ func RequestHandler(c *gin.Context) {
 
 	// Run unoconvert command with options
 	// If context timeout is 0s run without timeout
-	if unoconvert.ContextTimeout == 0 {
-		err = unoconvert.Run(inFile.Name(), outFile.Name(), form.Options...)
-	} else {
-		err = unoconvert.RunContext(context.Background(), inFile.Name(), outFile.Name(), form.Options...)
-	}
-
-	if err != nil {
-		log.Printf("unoconvert error: %s", err)
-		c.String(http.StatusInternalServerError, fmt.Sprintf("unoconvert error: %s", err))
-		return
-	}
-
-	// Send the converted file to body stream
-	c.File(outFile.Name())
 }

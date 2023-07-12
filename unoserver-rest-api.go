@@ -2,13 +2,10 @@ package main
 
 import (
 	"log"
-	"net"
 	"os"
 	"time"
 
 	"github.com/libreofficedocker/unoserver-rest-api/api"
-	"github.com/libreofficedocker/unoserver-rest-api/depot"
-	"github.com/libreofficedocker/unoserver-rest-api/unoconvert"
 	"github.com/urfave/cli"
 )
 
@@ -62,20 +59,6 @@ func main() {
 }
 
 func mainAction(c *cli.Context) {
-	// Create temporary working directory
-	depot.MkdirTemp()
-
-	// Cleanup temporary working directory after finished
-	defer depot.CleanTemp()
-
-	// Configure unoconvert options
-	unoAddr := c.String("unoserver-addr")
-	host, port, _ := net.SplitHostPort(unoAddr)
-	unoconvert.SetInterface(host)
-	unoconvert.SetPort(port)
-	unoconvert.SetExecutable(c.String("unoconvert-bin"))
-	unoconvert.SetContextTimeout(c.Duration("unoconvert-timeout"))
-
 	// Start the API server
 	addr := c.String("addr")
 	api.ListenAndServe(addr)
