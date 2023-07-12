@@ -13,17 +13,15 @@ install:
 run:
 	@go run unoserver-rest-api.go
 
-build: build-linux build-darwin
+build: build-bin build-rootfs
+	
+build-bin:
+	$(call build,linux)
+	$(call build,darwin)
 
-build-linux:
-	GOOS=linux go build -ldflags="-s -w -X main.Version=${VERSION}" -o bin/unoserver-rest-api-linux cli/unoserver-rest-api.go
-	upx -k bin/unoserver-rest-api-linux
+build-rootfs:
 	mkdir -p rootfs/usr/bin
 	cp bin/unoserver-rest-api-linux rootfs/usr/bin/unoserver-rest-api
-
-build-darwin:
-	GOOS=darwin go build -ldflags="-s -w -X main.Version=${VERSION}" -o bin/unoserver-rest-api-darwin cli/unoserver-rest-api.go
-	upx -k bin/unoserver-rest-api-darwin
 
 docker-build: build-linux
 	docker build --pull --rm -f "Dockerfile" -t ${DOCKER_IMAGE} "."
@@ -41,3 +39,11 @@ $(OUTPUT)/s6-overlay-module.tar.zx:
 clean:
 	rm -rf bin; true
 	rm -rf $(OUTPUT); true
+
+# define a reusable recipe
+define build
+	@echo "Building for $(1)..."
+	CGO_ENABLED=0 GOOS=$(1) \
+		go build -ldflags="-s -w -X main.Version=${VERSION}" -o bin/unoserver-rest-api-$(1) cli/unoserver-rest-api.go
+		upx -k bin/unoserver-rest-api-$(1)
+endef
