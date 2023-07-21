@@ -7,9 +7,6 @@ concurrency:
 on:
   release:
     types: [published]
-    
-env:
-  CGO_ENABLED: 0
 
 jobs:
   build:

@@ -33,6 +33,6 @@ clean:
 define go-build
 	@echo "- Building for $(1)-$(2)..."
 	@echo
-	@GOOS=$(1) GOARCH=$(2) go build -ldflags="-s -w -X main.Version=${VERSION}" -o $(OUTPUT)/unoserver-rest-api-$(1)-$(2) unoserver-rest-api.go
+	@CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -ldflags="-s -w -X main.Version=${VERSION}" -o $(OUTPUT)/unoserver-rest-api-$(1)-$(2) unoserver-rest-api.go
 	@upx $(OUTPUT)/unoserver-rest-api-$(1)-$(2)
 endef
