@@ -5,8 +5,8 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: v*.*.*
 
 jobs:
   build:
