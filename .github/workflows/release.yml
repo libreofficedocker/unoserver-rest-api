@@ -26,7 +26,6 @@ jobs:
         run: |
           make
           make build VERSION=${{ github.event.release.tag_name }}
-          cd build ; for f in unoserver-rest-api* ; do sha256sum "$f" > "$f".sha256 ; done
 
       - name: Upload releases
         uses: softprops/action-gh-release@v1
