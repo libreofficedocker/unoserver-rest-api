@@ -6,6 +6,13 @@ DOCKER_IMAGE=${DOCKER_REGISTRY}/${DOCKER_NAME}:${DOCKER_TAG}
 
 OUTPUT := build
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	SHA_CMD := shasum -a 256
+else
+	SHA_CMD := sha256sum
+endif
+
 install:
 	@go mod tidy
 
@@ -27,7 +34,7 @@ run-docker:
 	docker run -it --rm  -p "2003:2003" ${DOCKER_IMAGE}
 
 clean:
-	rm -rf $(OUTPUT); true
+	@rm -rf $(OUTPUT); true
 
 # define function
 define go-build
@@ -35,4 +42,5 @@ define go-build
 	@echo
 	@CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -ldflags="-s -w -X main.Version=${VERSION}" -o $(OUTPUT)/unoserver-rest-api-$(1)-$(2) unoserver-rest-api.go
 	@upx $(OUTPUT)/unoserver-rest-api-$(1)-$(2)
+	@cd $(OUTPUT) && $(SHA_CMD) unoserver-rest-api-$(1)-$(2) > unoserver-rest-api-$(1)-$(2).sha256
 endef
