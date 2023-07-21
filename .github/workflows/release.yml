@@ -28,11 +28,6 @@ jobs:
           make build VERSION=${{ github.event.release.tag_name }}
           cd bin ; for f in unoserver-rest-api* ; do sha256sum "$f" > "$f".sha256 ; done
 
-      - name: Build s6-overlay-module
-        run: |
-          make s6-overlay-module
-          cd output ; for f in *.tar* ; do sha256sum "$f" > "$f".sha256 ; done
-
       - name: Upload releases
         uses: softprops/action-gh-release@v1
         with:
