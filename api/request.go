@@ -81,6 +81,8 @@ func RequestHandler(c *gin.Context) {
 		err = unoconvert.RunContext(context.Background(), inFile.Name(), outFile.Name(), form.Options...)
 	}
 
+	log.Printf("Processing: %s %s %s", inFile.Name(), outFile.Name(), form.Options)
+
 	if err != nil {
 		log.Printf("unoconvert error: %s", err)
 		c.String(http.StatusInternalServerError, fmt.Sprintf("unoconvert error: %s", err))

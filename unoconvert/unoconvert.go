@@ -3,7 +3,6 @@ package unoconvert
 import (
 	"context"
 	"fmt"
-	"log"
 	"os/exec"
 	"time"
 )
@@ -81,7 +80,6 @@ func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 	args = append(connections, files...)
 	args = append(args, opts...)
 
-	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.Command(u.Executable, args...)
 
 	return cmd.Run()
@@ -102,8 +100,6 @@ func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile stri
 
 	args = append(connections, files...)
 	args = append(args, opts...)
-
-	log.Printf("Command: %s %s", u.Executable, args)
 
 	cmd := exec.CommandContext(ctx, u.Executable, args...)
 	return cmd.Run()
