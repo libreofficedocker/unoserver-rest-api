@@ -18,10 +18,15 @@ func ListenAndServe(addr string) {
 	router.SetTrustedProxies(nil)
 
 	// Routes
+	router.GET("/", Index)
+	router.POST("/", BadVerb)
+	router.GET("/healthcheck", Index)
+	router.POST("/healthcheck", BadVerb)
+	router.GET("/request", BadVerb)
 	router.POST("/request", RequestHandler)
 
 	if addr == "" {
-		addr = ":2004"
+		addr = ":80"
 	}
 
 	pm := endless.NewServer(addr, router)
